@@ -80,6 +80,8 @@ class QuantumCircuit:
     
     def apply_z(self, qubit_index):
         Z = np.array([[1, 0], [0, -1]])
+        # invert qubit index
+        qubit_index = self.num_qubits - qubit_index - 1
         for i in range(self.num_qubits):
             if i == qubit_index:
                 operator = Z

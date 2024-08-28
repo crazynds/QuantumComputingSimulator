@@ -2,17 +2,14 @@ from QuantumSystem import  QuantumCircuit
 
 
 # Exemplo de uso
-qc1 = QuantumCircuit(1)
-qc2 = QuantumCircuit(3)
+qc = QuantumCircuit(16)
 
-#qc1.apply_hadamard(0)
-#qc1.apply_x(0)
-#qc1.apply_z(0)
+qc.apply_hadamard(1)
+qc.apply_hadamard(0)
 
-qbit = qc2.teleport(qc1.get_qubit(0))
+qc.apply_x(2)
 
-print(qbit)
+qc.apply_ccnot([0,1], 2)
 
+print(qc)
 
-# for i in range(N):
-#     print(f'{i}#',qc.get_qubit(i))

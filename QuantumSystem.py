@@ -38,8 +38,31 @@ class QuantumCircuit:
                 flipped = binary[:target_qubit] + ('1' if binary[target_qubit] == '0' else '0') + binary[target_qubit+1:]
                 j = int(flipped, 2)
             CNOT[i, j] = 1
+
         self.state = np.dot(CNOT, self.state)
     
+
+    def apply_ccnot(self, controll_bits:list, target_qubit):
+        size = 2**self.num_qubits
+        # invert qubit index
+        controll_bits = [self.num_qubits - bit - 1 for bit in controll_bits]
+        target_qubit = target_qubit
+
+        U_CCNOT = np.eye(size, dtype=complex)
+    
+        for i in range(size):
+            binary = np.binary_repr(i, width=self.num_qubits)
+            if all(binary[c] == '1' for c in controll_bits):
+                target_state = i ^ (1 << target_qubit)
+                U_CCNOT[i, i] = 0
+                U_CCNOT[i, target_state] = 1
+                U_CCNOT[target_state, target_state] = 0
+                U_CCNOT[target_state, i] = 1
+        
+        self.state = np.dot(U_CCNOT, self.state)
+
+    
+
     def apply_x(self, qubit_index):
         X = np.array([[0, 1], [1, 0]])
         # invert qubit index
